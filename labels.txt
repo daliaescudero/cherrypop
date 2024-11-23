@@ -1,0 +1,5 @@
+0 Piel grasa
+1 Piel seca
+2 Piel sensible
+3 Piel Normal
+4 Piel Mixta

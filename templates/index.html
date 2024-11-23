@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sube una Imagen para Clasificación</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Sube una Imagen para Clasificarla</h1>
+    <form id="upload-form" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required>
+        <button type="submit">Subir Imagen</button>
+    </form>
+
+    <div id="result"></div>  <!-- Aquí se mostrarán los resultados -->
+
+    <script>
+        $(document).ready(function() {
+            $("#upload-form").on("submit", function(e) {
+                e.preventDefault();  // Evita el comportamiento por defecto del formulario
+
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '/',  // URL donde se envía la petición POST
+                    type: 'POST',
+                    data: formData,
+                    contentType: false,
+                    processData: false,
+                    success: function(response) {
+                        if (response.error) {
+                            $("#result").html("<p style='color:red;'>Error: " + response.error + "</p>");
+                        } else {
+                            var resultHTML = `
+                                <h3>Resultado:</h3>
+                                <p><strong>Tipo de Piel:</strong> ${response.class}</p>
+                                <p><strong>Confianza:</strong> ${response.confidence.toFixed(2)}</p>
+                            `;
+                            $("#result").html(resultHTML);  // Muestra el resultado en el div 'result'
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        $("#result").html("<p style='color:red;'>Hubo un problema al procesar la imagen. Intenta de nuevo.</p>");
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
