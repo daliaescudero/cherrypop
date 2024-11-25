@@ -3,6 +3,10 @@ from tensorflow.keras.models import load_model
 from PIL import Image, ImageOps
 import numpy as np
 import os
+import tensorflow as tf
+
+# Desactivar advertencias de TensorFlow
+tf.get_logger().setLevel('ERROR')
 
 app = Flask(__name__)
 
@@ -77,7 +81,6 @@ def index():
     return render_template("index.html")
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # Heroku asigna un puerto dinámico
-    app.run(debug=True, port=port)
-
-
+    # Asignar puerto dinámico para producción
+    port = int(os.environ.get("PORT", 5000))  # Heroku o Render asignan un puerto dinámico
+    app.run(debug=True, host="0.0.0.0", port=port)
