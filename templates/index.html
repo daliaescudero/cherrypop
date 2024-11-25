@@ -3,51 +3,149 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sube una Imagen para Clasificación</title>
+    <title>CherryPop - Inicio</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script>
+        // Definir los consejos directamente en el frontend
+        const SKIN_ADVICE = {
+            "Mixta": "Utilizar limpiadores que respeten el pH de la piel.",
+            "Grasa": "Los productos en gel y sin aceites ayudan a equilibrar la producción de sebo.",
+            "Normal": "Utiliza productos de higiene suaves y eficaces que no eliminen la barrera protectora de la piel.",
+            "Sensible": "Usar cremas con protección solar todo el año, para proteger la piel sensible de los rayos UV.",
+            "Seca": "Aplicar cremas nutritivas dos veces al día y realizar una exfoliación semanal."
+        };
+
+        function showSection(sectionId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('section').forEach(section => {
+                section.style.display = 'none';
+            });
+            // Mostrar solo la sección seleccionada
+            document.getElementById(sectionId).style.display = 'flex';
+
+            // Guardar el sectionId en localStorage
+            localStorage.setItem('currentSection', sectionId);
+
+            // Cambiar el texto del header
+            updateHeaderText(sectionId);
+        }
+
+        function updateHeaderText(sectionId) {
+            const headerText = document.querySelector('.header-text h2');
+            switch (sectionId) {
+                case 'inicio':
+                    headerText.textContent = 'Tu Asesor de Cuidado de Piel Personalizado';
+                    break;
+                case 'nosotros':
+                    headerText.textContent = '¿QUIÉNES SOMOS?';
+                    break;
+                case 'tipos-piel':
+                    headerText.textContent = 'Cada Piel es Única: Encuentra la Tuya';
+                    break;
+                default:
+                    headerText.textContent = 'Tu Asesor de Cuidado de Piel Personalizado';
+            }
+        }
+
+        function uploadImage() {
+            const input = document.createElement('input');
+            input.type = 'file';
+            input.accept = 'image/*'; // Permitir solo imágenes
+            input.onchange = (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const formData = new FormData();
+                    formData.append("file", file);
+
+                    // Mostrar mensaje de carga
+                    document.getElementById('result').innerHTML = '<p>Procesando imagen...</p>';
+
+                    // Enviar al servidor
+                    fetch("/", {
+                        method: "POST",
+                        body: formData,
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.error) {
+                                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                            } else {
+                                // Mostrar el tipo de piel y el consejo
+                                const advice = SKIN_ADVICE[data.class] || 'No se encontró consejo para este tipo de piel.';
+                                document.getElementById('result').innerHTML = `
+                                    <p><strong>Tipo de Piel:</strong> ${data.class}</p>
+                                       <p class="consejo"><strong>Consejo: </strong>${advice}</p>
+                                `;
+                            }
+                        })
+                        .catch((error) => {
+                            document.getElementById('result').innerHTML = `<p style="color: red;">Hubo un error al procesar la imagen.</p>`;
+                        });
+                }
+            };
+            input.click();
+        }
+
+        // Mostrar la sección almacenada en localStorage al cargar la página
+        window.onload = function() {
+            const savedSection = localStorage.getItem('currentSection');
+            if (savedSection) {
+                showSection(savedSection);
+            } else {
+                showSection('inicio');  // Muestra "inicio" por defecto si no hay sección guardada
+            }
+        };
+    </script>
 </head>
 <body>
-    <h1>Sube una Imagen para Clasificarla</h1>
-    <form id="upload-form" method="POST" enctype="multipart/form-data">
-        <input type="file" name="file" required>
-        <button type="submit">Subir Imagen</button>
-    </form>
 
-    <div id="result"></div>  <!-- Aquí se mostrarán los resultados -->
+<header>
+    <div class="header-text">
+        <h2>Tu Asesor de Cuidado de Piel Personalizado</h2>
+    </div>
+</header>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#upload-form").on("submit", function(e) {
-                e.preventDefault();  // Evita el comportamiento por defecto del formulario
+<div class="menu-container">
+    <nav>
+        <ul>
+            <li><a href="javascript:void(0);" onclick="showSection('inicio')">Inicio</a></li>
+            <li><a href="javascript:void(0);" onclick="showSection('nosotros')">Nosotros</a></li>
+            <li><a href="javascript:void(0);" onclick="showSection('tipos-piel')">Tipos de Pieles</a></li>
+        </ul>
+    </nav>
+</div>
 
-                var formData = new FormData(this);
+<!-- Sección Inicio -->
+<section id="inicio" class="main-section">
+    <div class="main-content">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='imagenes/cherrypop-logo.png') }}" alt="CherryPop Logo">
+        </div>
+        <div class="boton">
+            <button class="upload-btn" onclick="uploadImage()">Sube tu imagen</button>
+        </div>
+    </div>
+    <div class="blue-container">
+        <div id="result" class="info-message">
+            <p>Descubre lo que tu piel<br> necesita. Sube una foto para<br> análisis instantáneo y obtén<br> consejos personalizados.</p>
+            <img src="{{ url_for('static', filename='imagenes/carita.png') }}" alt="Icono de carita" class="carita-image">
+        </div>
+    </div>
+</section>
 
-                $.ajax({
-                    url: '/',  // URL donde se envía la petición POST
-                    type: 'POST',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        if (response.error) {
-                            $("#result").html("<p style='color:red;'>Error: " + response.error + "</p>");
-                        } else {
-                            var resultHTML = `
-                                <h3>Resultado:</h3>
-                                <p><strong>Tipo de Piel:</strong> ${response.class}</p>
-                                <p><strong>Confianza:</strong> ${response.confidence.toFixed(2)}</p>
-                            `;
-                            $("#result").html(resultHTML);  // Muestra el resultado en el div 'result'
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        $("#result").html("<p style='color:red;'>Hubo un problema al procesar la imagen. Intenta de nuevo.</p>");
-                    }
-                });
-            });
-        });
-    </script>
+<!-- Sección Nosotros -->
+<section id="nosotros" class="main-section">
+    <div class="contenedor-historia">
+        <p>Nuestra Historia</p>
+    </div>
+</section>
+
+<!-- Sección Tipos de Piel -->
+<section id="tipos-piel" class="main-section">
+    <div class="contenedor-historia">
+        <p>Los diferentes tipos de piel y sus cuidados</p>
+    </div>
+</section>
+
 </body>
 </html>
-
-

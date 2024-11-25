@@ -1,0 +1,201 @@
+/* Cargar la fuente personalizada desde la carpeta fonts */
+@font-face {
+  font-family: "MiFuente";
+  src: url("/static/fonts/MiFuente.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* Aplicar la fuente personalizada a todo el cuerpo */
+body {
+    font-family: 'MiFuente', sans-serif;
+    background-image: url('imagenes/fondo.jpg');  /* Imagen de fondo de la página */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilos del encabezado */
+header {
+    background-color: #64ba47;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    border: none;
+}
+
+.header-text h2 {
+    font-size: 1.5vw; /* Tamaño adaptativo */
+    text-align: center;
+}
+
+/* Contenedor del menú */
+.menu-container {
+    background-color: rgb(210, 52, 51);
+    width: 90%;
+    padding: 20px 0;
+    border-radius: 20px;
+    text-align: center;
+    margin: 15px auto 0 auto;
+}
+
+/* Menú de navegación */
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    gap: 8vw;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 2vw; /* Tamaño adaptativo del texto */
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    nav ul li a {
+        font-size: 4vw; /* Texto más pequeño en pantallas medianas */
+    }
+}
+
+@media (max-width: 480px) {
+    nav ul li a {
+        font-size: 5vw; /* Texto más pequeño en pantallas pequeñas */
+    }
+}
+
+/* Secciones principales */
+.main-section {
+    display: none;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 20px;
+    height: 100vh;
+}
+
+#inicio {
+    display: flex; /* Mostrar la sección de inicio por defecto */
+}
+
+/* Contenido de las secciones */
+.main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+    width: 50%;
+}
+
+.logo img {
+    width: 90%;
+    height: auto;
+}
+
+.upload-btn {
+    background-image: url('imagenes/boton.png'); /* Ruta de la imagen de fondo */
+    background-size: 90%; /* Ajusta cómo se escala la imagen */
+    background-repeat: no-repeat; /* Evita que la imagen se repita */
+    background-position: center; /* Centra la imagen dentro del botón */
+    color: white;
+    padding: 60px 40px;
+    border: none;
+    border-radius: 10px;
+    font-size: 2.5vw;
+    cursor: pointer;
+    font-family: 'MiFuente', sans-serif;
+    background-color: transparent;
+}
+
+/* Contenedor derecho con fondo */
+.blue-container {
+    width: 50%;
+    padding: 30px;
+    background-image: url('imagenes/caja.png');
+    background-size: cover;
+    background-position: center;
+    text-align: center;
+    height: 50%;
+    position: relative;
+}
+
+/* Texto adaptativo dentro de .info-message */
+.info-message p {
+    color: black;
+    font-size: 2.5vw; /* Texto adaptativo */
+    padding-top: 85px;
+    margin: 0;
+    line-height: 1.2;
+}
+
+.carita-image {
+    position: absolute;
+    bottom: -190px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40vw;
+    height: auto;
+}
+
+/* Animación de desplazamiento suave */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Contenedor de Historia */
+.contenedor-historia {
+    background-image: url('imagenes/historia.png');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    height: 500px;
+    margin: 10px;
+    text-align: center;
+    margin-top: 100px;  /* Ajusta el margen superior para mover el contenedor hacia abajo */
+}
+
+/* Estilo exclusivo para el texto del consejo */
+#result p.consejo {
+    font-size: 1.9vw; /* Tamaño más pequeño */
+    line-height: 1.5; /* Espaciado más uniforme */
+    color: black;
+    text-align: center;
+    margin-top: 0px; /* Ajusta el margen superior para subirlo */
+    max-width: 60%; /* Reducir el ancho del texto */
+    margin-left: auto;
+    margin-right: auto; /* Centrar el texto */
+}
+
+/* Adaptaciones para pantallas medianas */
+@media (max-width: 768px) {
+    #result p.consejo {
+        font-size: 1.5vw; /* Tamaño en pantallas medianas */
+    }
+}
+
+/* Adaptaciones para pantallas pequeñas */
+@media (max-width: 480px) {
+    #result p.consejo {
+        font-size: 2vw; /* Tamaño en pantallas pequeñas */
+    }
+}
+
+
