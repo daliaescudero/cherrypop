@@ -23,6 +23,11 @@
             // Mostrar solo la sección seleccionada
             document.getElementById(sectionId).style.display = 'flex';
 
+            // Evita que la interacción se bloquee después de subir la imagen
+            document.querySelectorAll('nav ul li a').forEach(link => {
+                link.style.pointerEvents = 'auto'; // Habilita los clics en los enlaces
+            });
+
             // Guardar el sectionId en localStorage
             localStorage.setItem('currentSection', sectionId);
 
@@ -38,9 +43,6 @@
                     break;
                 case 'nosotros':
                     headerText.textContent = '¿QUIÉNES SOMOS?';
-                    break;
-                case 'tipos-piel':
-                    headerText.textContent = 'Cada Piel es Única: Encuentra la Tuya';
                     break;
                 default:
                     headerText.textContent = 'Tu Asesor de Cuidado de Piel Personalizado';
@@ -110,7 +112,6 @@
         <ul>
             <li><a href="javascript:void(0);" onclick="showSection('inicio')">Inicio</a></li>
             <li><a href="javascript:void(0);" onclick="showSection('nosotros')">Nosotros</a></li>
-            <li><a href="javascript:void(0);" onclick="showSection('tipos-piel')">Tipos de Pieles</a></li>
         </ul>
     </nav>
 </div>
@@ -126,26 +127,23 @@
         </div>
     </div>
     <div class="blue-container">
-        <div id="result" class="info-message">
-            <p>Descubre lo que tu piel<br> necesita. Sube una foto para<br> análisis instantáneo y obtén<br> consejos personalizados.</p>
-            <img src="{{ url_for('static', filename='imagenes/carita.png') }}" alt="Icono de carita" class="carita-image">
-        </div>
+    <div id="result" class="info-message">
+        <p>Descubre lo que tu piel<br> necesita. Sube una foto para<br> análisis instantáneo y obtén<br> consejos personalizados.</p>
     </div>
+</div>
+
 </section>
 
-<!-- Sección Nosotros -->
 <section id="nosotros" class="main-section">
     <div class="contenedor-historia">
-        <p>Nuestra Historia</p>
+        <!-- Imagen historia (a la izquierda) -->
+        <img src="{{ url_for('static', filename='imagenes/historia.png') }}" alt="Historia" class="historia-image">
+
+        <!-- Imagen de la misión (a la derecha) -->
+        <img src="{{ url_for('static', filename='imagenes/mision.png') }}" alt="Misión" class="mision-image">
     </div>
 </section>
 
-<!-- Sección Tipos de Piel -->
-<section id="tipos-piel" class="main-section">
-    <div class="contenedor-historia">
-        <p>Los diferentes tipos de piel y sus cuidados</p>
-    </div>
-</section>
 
 </body>
 </html>
